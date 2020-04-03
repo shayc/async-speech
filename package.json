@@ -1,7 +1,10 @@
 {
+  "name": "@shayc/async-speech",
   "version": "0.1.0",
   "license": "MIT",
+  "author": "Shay Cojocaru",
   "main": "dist/index.js",
+  "module": "dist/async-speech.esm.js",
   "typings": "dist/index.d.ts",
   "files": [
     "dist",
@@ -29,9 +32,6 @@
     "singleQuote": true,
     "trailingComma": "es5"
   },
-  "name": "@shayc/async-speech",
-  "author": "Shay Cojocaru",
-  "module": "dist/async-speech.esm.js",
   "devDependencies": {
     "@types/jest": "^25.1.5",
     "husky": "^4.2.3",
