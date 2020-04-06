@@ -1,3 +1,8 @@
+type SpeakOptions = Omit<
+  Partial<SpeechSynthesisUtterance>,
+  'addEventListener' | 'removeEventListener' | 'dispatchEvent'
+>;
+
 export const DEFAULT_PITCH = 1;
 export const DEFAULT_RATE = 1;
 export const DEFAULT_VOLUME = 1;
@@ -10,7 +15,7 @@ export const MIN_VOLUME = 0;
 
 export function createAsyncSpeech(speechSynthesis: SpeechSynthesis) {
   function getVoices(): Promise<SpeechSynthesisVoice[]> {
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       const voices = speechSynthesis.getVoices();
 
       if (voices.length) {
@@ -38,10 +43,7 @@ export function createAsyncSpeech(speechSynthesis: SpeechSynthesis) {
 
   function speak(
     text: string,
-    options: Omit<
-      SpeechSynthesisUtterance,
-      'addEventListener' | 'removeEventListener' | 'dispatchEvent'
-    >
+    options: SpeakOptions
   ): Promise<SpeechSynthesisEvent> {
     return new Promise((resolve, reject) => {
       const utterance = new window.SpeechSynthesisUtterance(text);
@@ -62,17 +64,18 @@ export function createAsyncSpeech(speechSynthesis: SpeechSynthesis) {
           }
         },
         onboundary(event) {
-          // let _event = { ...event };
+          const _event = { ...event };
+          
+          // Polyfill 'charLength'
+          if (!('charLength' in event)) {
+            const { charIndex, utterance } = event as SpeechSynthesisEvent;
+            const spaceIndex = utterance.text.indexOf(' ', charIndex);
+            const charLength =
+              (spaceIndex !== -1 ? spaceIndex : utterance.text.length) -
+              charIndex;
 
-          // // Polyfill 'charLength'
-          // if (!('charLength' in event)) {
-          //   const { charIndex, target } = event;
-          //   const spaceIndex = target.text.indexOf(' ', charIndex);
-          //   const charLength =
-          //     (spaceIndex !== -1 ? spaceIndex : target.text.length) - charIndex;
-
-          //   _event.charLength = charLength;
-          // }
+            _event.charLength = charLength;
+          }
 
           if (options.onboundary) {
             options.onboundary.call(utterance, event);

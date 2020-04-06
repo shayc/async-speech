@@ -1,6 +1,6 @@
 import { createAsyncSpeech } from '.';
 
-describe('blah', () => {
+describe('async speech', () => {
   let speechSynthesisMock: Partial<SpeechSynthesis>;
 
   beforeEach(() => {
