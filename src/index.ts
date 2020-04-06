@@ -14,6 +14,10 @@ export const MIN_RATE = 0.1;
 export const MIN_VOLUME = 0;
 
 export function createAsyncSpeech(speechSynthesis: SpeechSynthesis) {
+  function cancel(): void {
+    speechSynthesis.cancel();
+  }
+
   function getVoices(): Promise<SpeechSynthesisVoice[]> {
     return new Promise(resolve => {
       const voices = speechSynthesis.getVoices();
@@ -27,10 +31,6 @@ export function createAsyncSpeech(speechSynthesis: SpeechSynthesis) {
         };
       }
     });
-  }
-
-  function cancel(): void {
-    speechSynthesis.cancel();
   }
 
   function pause(): void {
@@ -65,7 +65,7 @@ export function createAsyncSpeech(speechSynthesis: SpeechSynthesis) {
         },
         onboundary(event) {
           const _event = { ...event };
-          
+
           // Polyfill 'charLength'
           if (!('charLength' in event)) {
             const { charIndex, utterance } = event as SpeechSynthesisEvent;
