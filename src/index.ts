@@ -1,6 +1,8 @@
-type SpeakOptions = Omit<
-  Partial<SpeechSynthesisUtterance>,
-  'addEventListener' | 'removeEventListener' | 'dispatchEvent'
+type UtteranceAttributes = Partial<
+  Omit<
+    SpeechSynthesisUtterance,
+    'addEventListener' | 'removeEventListener' | 'dispatchEvent'
+  >
 >;
 
 export const DEFAULT_PITCH = 1;
@@ -43,7 +45,7 @@ export function createAsyncSpeech(speechSynthesis: SpeechSynthesis) {
 
   function speak(
     text: string,
-    options: SpeakOptions
+    options: UtteranceAttributes
   ): Promise<SpeechSynthesisEvent> {
     return new Promise((resolve, reject) => {
       const utterance = new window.SpeechSynthesisUtterance(text);
