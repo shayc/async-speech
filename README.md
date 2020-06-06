@@ -1,4 +1,32 @@
-# TSDX Bootstrap
+# async-speech
+
+Provides async API for the browser's [`SpeechSynthesis`](https://wicg.github.io/speech-api/#tts-section) interface.
+
+## API
+
+### `getVoices(): Promise<SpeechSynthesisVoice[]>`
+
+### `speak(text: string, options: UtteranceAttributes): Promise<SpeechSynthesisEvent>`
+
+### `cancel(): void`
+
+### `pause(): void`
+
+### `resume(): void`
+
+## Example
+
+```js
+import { createAsyncSpeech } from '@shayc/async-speech';
+
+const asyncSpeech = createAsyncSpeech(window.speechSynthesis);
+
+async function exampleSpeak() {
+  await asyncSpeech.speak('hello world!');
+
+  // do something
+}
+```
 
 This project was bootstrapped with [TSDX](https://github.com/jaredpalmer/tsdx).
 
